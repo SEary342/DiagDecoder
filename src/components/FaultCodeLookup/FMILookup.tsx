@@ -33,13 +33,13 @@ export const FMILookup = ({
   });
   return (
     <Autocomplete
+      size="small"
       options={fmiOptions}
       value={cleanFmi(value)}
       onChange={(_, newValue: string | null) => {
         onChange(newValue ? fmiMap.get(newValue) ?? null : null);
       }}
       disablePortal
-      sx={{ width: 400 }}
       renderInput={(params) => <TextField {...params} label="FMI" />}
     />
   );

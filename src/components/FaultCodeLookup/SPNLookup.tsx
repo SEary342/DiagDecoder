@@ -14,12 +14,14 @@ export const SPNLookup = ({
 }) => {
   // Deduplicate by SPN
   const uniqueSPNs = Array.from(
-    faultCodeData.reduce((acc, fc) => {
-      if (fc.spn && !acc.has(fc.spn)) {
-        acc.set(fc.spn, fc);
-      }
-      return acc;
-    }, new Map<number, faultCode>()).values()
+    faultCodeData
+      .reduce((acc, fc) => {
+        if (fc.spn && !acc.has(fc.spn)) {
+          acc.set(fc.spn, fc);
+        }
+        return acc;
+      }, new Map<number, faultCode>())
+      .values()
   );
 
   // Find the currently selected option
@@ -27,7 +29,8 @@ export const SPNLookup = ({
 
   return (
     <Autocomplete
-      sx={{ width: 300 }}
+      size="small"
+      fullWidth
       options={uniqueSPNs}
       getOptionLabel={formatSPNName}
       value={selectedOption}
