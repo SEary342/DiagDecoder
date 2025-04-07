@@ -1,24 +1,17 @@
-import { Autocomplete, Box, Grid, TextField, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { FMILookup } from "./FMILookup";
-import { faultCode } from "../../types/faultCodes";
-
-const formatSPNName = (fc?: faultCode) =>
-  fc ? `${fc.spn}: ${fc.spnName}` : "";
+import { SPNLookup } from "./SPNLookup";
 
 export const FaultCodeLookup = () => {
   const faultCodeData = useSelector(
     (state: RootState) => state.faultCodes.list
   );
-  const spnNameOptions = [
-    ...new Set(
-      faultCodeData.map((x) => `${x.spn}: ${x.spnName}`).filter(Boolean)
-    ),
-  ];
-  const [spnSelected, setspnSelected] = useState<number | null>();
-  const [fmiSelected, setfmiSelected] = useState<string | null>();
+
+  const [spnSelected, setspnSelected] = useState<number | null>(null);
+  const [fmiSelected, setfmiSelected] = useState<string | null>(null);
   const lookupData = faultCodeData.find(
     (x) => x.spn === spnSelected && x.fmi === fmiSelected
   );
@@ -40,19 +33,10 @@ export const FaultCodeLookup = () => {
             <Typography variant="subtitle1">SPN/FMI Decoding</Typography>
           </Box>
           <Grid container flexDirection="row">
-            <Autocomplete
-              sx={{ width: 300 }}
-              options={spnNameOptions}
-              value={formatSPNName(
-                faultCodeData.find((x) => x.spn === spnSelected) || undefined
-              )}
-              onChange={(_, newValue) =>
-                setspnSelected(newValue ? Number(newValue.split(":")[0]) : null)
-              }
-              getOptionLabel={(option) => String(option)}
-              renderInput={(params) => (
-                <TextField {...params} label="SPN/Component" />
-              )}
+            <SPNLookup
+              faultCodeData={faultCodeData}
+              onChange={setspnSelected}
+              value={spnSelected}
             />
             <FMILookup
               faultCodeData={faultCodeData}

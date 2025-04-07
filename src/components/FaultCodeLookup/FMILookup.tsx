@@ -17,8 +17,8 @@ export const FMILookup = ({
 }: {
   value?: string | null;
   faultCodeData: faultCode[];
-  spnSelected?: number | null;
-  onChange: (fmi?: string | null) => void;
+  spnSelected: number | null;
+  onChange: (fmi: string | null) => void;
 }) => {
   const fmiMap = faultCodeData
     .filter((x) => x.spn === spnSelected)
@@ -36,7 +36,7 @@ export const FMILookup = ({
       options={fmiOptions}
       value={cleanFmi(value)}
       onChange={(_, newValue: string | null) => {
-        onChange(newValue ? fmiMap.get(newValue) : undefined);
+        onChange(newValue ? fmiMap.get(newValue) ?? null : null);
       }}
       disablePortal
       sx={{ width: 400 }}
