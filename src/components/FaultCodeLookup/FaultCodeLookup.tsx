@@ -6,37 +6,31 @@ import {
   Grid,
   Typography,
 } from "@mui/material"
-import { useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store/store"
 import { FMILookup } from "./FMILookup"
 import { SPNLookup } from "./SPNLookup"
 import { ReadOnlyText } from "../Util/ReadOnlyText"
 import { DegradedMode } from "./DegradedMode"
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"
-
-const ContentHeader = ({ text }: { text: string }) => (
-  <Box
-    sx={{
-      justifyContent: "center",
-      alignItems: "center",
-      display: "flex",
-      backgroundColor: "rgba(128,128,128,0.5)",
-      p: 1,
-      borderRadius: 2,
-    }}
-  >
-    <Typography variant="subtitle1">{text}</Typography>
-  </Box>
-)
+import { setFmiSelected, setSpnSelected } from "../../store/selectionSlice"
+import { ContentHeader } from "../Util/ContentHeader"
 
 export const FaultCodeLookup = () => {
+  const dispatch = useDispatch()
   const faultCodeData = useSelector((state: RootState) => state.faultCodes.list)
 
-  const [spnSelected, setspnSelected] = useState<number | null>(null)
-  const [fmiSelected, setfmiSelected] = useState<string | null>(null)
+  const spnSelected = useSelector(
+    (state: RootState) => state.selection.spnSelected
+  )
+  const fmiSelected = useSelector(
+    (state: RootState) => state.selection.fmiSelected
+  )
+  const setSpn = (spn: number | null) => dispatch(setSpnSelected(spn))
+  const setFmi = (fmi: string | null) => dispatch(setFmiSelected(fmi))
+
   const lookupData = faultCodeData.find(
-    (x) => x.spn === spnSelected && x.fmi === fmiSelected,
+    (x) => x.spn === spnSelected && x.fmi === fmiSelected
   )
 
   const faultInfoFields = {
@@ -63,14 +57,14 @@ export const FaultCodeLookup = () => {
             <Grid size={5}>
               <SPNLookup
                 faultCodeData={faultCodeData}
-                onChange={setspnSelected}
+                onChange={setSpn}
                 value={spnSelected}
               />
             </Grid>
             <Grid size={5}>
               <FMILookup
                 faultCodeData={faultCodeData}
-                onChange={setfmiSelected}
+                onChange={setFmi}
                 spnSelected={spnSelected}
                 value={fmiSelected}
               />
@@ -170,13 +164,13 @@ export const FaultCodeLookup = () => {
         <Grid container spacing={2} flexDirection="column" size={4}>
           <ContentHeader text="Fault Information" />
           {Object.entries(faultInfoFields).map(([k, v]) => (
-            <Grid container flexDirection="row">
+            <Grid container flexDirection="row" key={k}>
               <ReadOnlyText label={k} multiline value={v} />
             </Grid>
           ))}
           <ContentHeader text="Fault/DM Injection Methods" />
           {Object.entries(faultDMInjectMtds).map(([k, v]) => (
-            <Grid container flexDirection="row">
+            <Grid container flexDirection="row" key={k}>
               <ReadOnlyText label={k} multiline value={v} />
             </Grid>
           ))}
