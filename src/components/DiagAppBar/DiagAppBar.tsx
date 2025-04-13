@@ -7,29 +7,29 @@ import {
   IconButton,
   Menu,
   Divider,
-} from "@mui/material";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useState } from "react";
-import { CsvUploader } from "../CsvUploader/CsvUploader";
+} from "@mui/material"
+import LocalShippingIcon from "@mui/icons-material/LocalShipping"
+import MoreVertIcon from "@mui/icons-material/MoreVert"
+import { useState } from "react"
+import { CsvUploader } from "../CsvUploader/CsvUploader"
 
 export const DiagAppBar = ({
   selectedPage,
   pages,
   onPageChange,
 }: {
-  selectedPage: string;
-  pages: string[];
-  onPageChange: (page: string) => void;
+  selectedPage: string
+  pages: string[]
+  onPageChange: (page: string) => void
 }) => {
-  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-  const open = Boolean(menuAnchor);
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
+  const open = Boolean(menuAnchor)
 
   const handleMenuOpen = (e: React.MouseEvent<HTMLElement>) => {
-    setMenuAnchor(e.currentTarget);
-  };
+    setMenuAnchor(e.currentTarget)
+  }
 
-  const handleMenuClose = () => setMenuAnchor(null);
+  const handleMenuClose = () => setMenuAnchor(null)
   return (
     <AppBar position="static" sx={{ backgroundColor: "#005eb8", boxShadow: 3 }}>
       <Toolbar
@@ -91,5 +91,5 @@ export const DiagAppBar = ({
         </Box>
       </Toolbar>
     </AppBar>
-  );
-};
+  )
+}

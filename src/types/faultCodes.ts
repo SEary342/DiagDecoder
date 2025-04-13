@@ -1,39 +1,39 @@
-import Papa from "papaparse";
+import Papa from "papaparse"
 
 export interface faultCode {
-  id: number;
-  spnName: string;
-  implemented: boolean;
-  faultCategory: string;
-  spn: number;
-  fmi: string;
-  primaryText: string;
-  monitorActive: string;
-  loopFault: string;
-  faultTime: string;
-  primaryDmCond: string;
-  primaryDegradedMode: string[];
-  secondaryDmCond: string;
-  secondaryDegradedMode: string[];
-  amberWarning: string;
-  redStop: string;
-  dm1Broadcast: string;
-  snapshotLogged: boolean;
-  faultLatch: string;
-  faultClear: string;
-  milWhenFault: string;
-  milMethodFault: string;
-  milMethodPrimaryDM: string;
-  milMethodSecondaryDM: string;
-  hilWhenFault: string;
-  hilMethodFault: string;
-  methodDisableFault: string;
-  faultCounterType: string;
-  productType: string[];
-  isHeading: boolean;
-  parentBinding: number;
-  module: number;
-  artifactType: string;
+  id: number
+  spnName: string
+  implemented: boolean
+  faultCategory: string
+  spn: number
+  fmi: string
+  primaryText: string
+  monitorActive: string
+  loopFault: string
+  faultTime: string
+  primaryDmCond: string
+  primaryDegradedMode: string[]
+  secondaryDmCond: string
+  secondaryDegradedMode: string[]
+  amberWarning: string
+  redStop: string
+  dm1Broadcast: string
+  snapshotLogged: boolean
+  faultLatch: string
+  faultClear: string
+  milWhenFault: string
+  milMethodFault: string
+  milMethodPrimaryDM: string
+  milMethodSecondaryDM: string
+  hilWhenFault: string
+  hilMethodFault: string
+  methodDisableFault: string
+  faultCounterType: string
+  productType: string[]
+  isHeading: boolean
+  parentBinding: number
+  module: number
+  artifactType: string
 }
 
 export const dataMap: { [key: string]: { importText: string } } = {
@@ -71,14 +71,14 @@ export const dataMap: { [key: string]: { importText: string } } = {
   parentBinding: { importText: "parentBinding" },
   module: { importText: "module" },
   artifactType: { importText: "Artifact Type" },
-};
+}
 
 const parseValue = (key: keyof faultCode, value: string): any => {
   if (value === undefined || value === null || value.trim() === "") {
-    if (Array.isArray(({} as faultCode)[key])) return [];
-    if (typeof ({} as faultCode)[key] === "boolean") return false;
-    if (typeof ({} as faultCode)[key] === "number") return 0;
-    return "";
+    if (Array.isArray(({} as faultCode)[key])) return []
+    if (typeof ({} as faultCode)[key] === "boolean") return false
+    if (typeof ({} as faultCode)[key] === "number") return 0
+    return ""
   }
 
   switch (key) {
@@ -86,19 +86,19 @@ const parseValue = (key: keyof faultCode, value: string): any => {
     case "spn":
     case "parentBinding":
     case "module":
-      return Number(value);
+      return Number(value)
     case "implemented":
     case "snapshotLogged":
     case "isHeading":
-      return value.toLowerCase() === "true";
+      return value.toLowerCase() === "true"
     case "primaryDegradedMode":
     case "secondaryDegradedMode":
     case "productType":
-      return value.split(",").map((s) => s.trim());
+      return value.split(",").map((s) => s.trim())
     default:
-      return value;
+      return value
   }
-};
+}
 
 export const parseCsvToJson = (file: File): Promise<faultCode[]> => {
   return new Promise((resolve, reject) => {
@@ -107,20 +107,20 @@ export const parseCsvToJson = (file: File): Promise<faultCode[]> => {
       skipEmptyLines: true,
       complete: (results) => {
         const parsed: faultCode[] = results.data.map((row: any) => {
-          const item: Partial<faultCode> = {};
+          const item: Partial<faultCode> = {}
           for (const key in dataMap) {
-            const typedKey = key as keyof faultCode;
-            const csvColumn = dataMap[typedKey].importText;
-            const rawValue = row[csvColumn];
-            item[typedKey] = parseValue(typedKey, rawValue);
+            const typedKey = key as keyof faultCode
+            const csvColumn = dataMap[typedKey].importText
+            const rawValue = row[csvColumn]
+            item[typedKey] = parseValue(typedKey, rawValue)
           }
-          return item as faultCode;
-        });
-        resolve(parsed);
+          return item as faultCode
+        })
+        resolve(parsed)
       },
       error: (error) => {
-        reject(error);
+        reject(error)
       },
-    });
-  });
-};
+    })
+  })
+}

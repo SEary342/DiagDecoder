@@ -1,8 +1,8 @@
 /// <reference types="vitest/config" />
 
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
-import { viteSingleFile } from "vite-plugin-singlefile";
+import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react-swc"
+import { viteSingleFile } from "vite-plugin-singlefile"
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -10,7 +10,7 @@ export default defineConfig({
   define: {
     "process.env": {},
     "import.meta.env.APP_VERSION": JSON.stringify(
-      process.env.npm_package_version
+      process.env.npm_package_version,
     ),
   },
   test: {

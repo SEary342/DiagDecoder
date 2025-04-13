@@ -1,13 +1,13 @@
-import { Button, Grid, Typography } from "@mui/material";
-import { ReadOnlyChipList } from "./ReadOnlyChipList";
-import { ReadOnlyText } from "./ReadOnlyText";
+import { Button, Grid, Typography } from "@mui/material"
+import { ReadOnlyChipList } from "./ReadOnlyChipList"
+import { ReadOnlyText } from "../Util/ReadOnlyText"
 
 export const DegradedMode = ({
   items,
   label,
 }: {
-  items?: string[];
-  label: string;
+  items?: string[]
+  label: string
 }) => (
   <Grid container flexDirection="row" sx={{ m: 2 }}>
     <Grid container flexDirection="column" size={2} gap={1}>
@@ -24,4 +24,4 @@ export const DegradedMode = ({
       <ReadOnlyChipList items={items} sx={{ mt: 3, ml: 2 }} />
     </Grid>
   </Grid>
-);
+)

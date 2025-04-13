@@ -1,12 +1,12 @@
-import { Theme } from "@emotion/react";
-import { Chip, Stack, SxProps } from "@mui/material";
+import { Theme } from "@emotion/react"
+import { Chip, Stack, SxProps } from "@mui/material"
 
 export const ReadOnlyChipList = ({
   items = [],
   sx,
 }: {
-  items?: string[];
-  sx?: SxProps<Theme>;
+  items?: string[]
+  sx?: SxProps<Theme>
 }) => (
   <Stack
     direction="row"
@@ -19,4 +19,4 @@ export const ReadOnlyChipList = ({
       <Chip key={index} label={item} data-testid="ro-chip" size="small" />
     ))}
   </Stack>
-);
+)

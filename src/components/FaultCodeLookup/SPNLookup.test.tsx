@@ -1,6 +1,6 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { SPNLookup } from "./SPNLookup";
-import { faultCode } from "../../types/faultCodes";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react"
+import { SPNLookup } from "./SPNLookup"
+import { faultCode } from "../../types/faultCodes"
 
 // Updated mock data for fault codes with all fields filled
 const mockFaultCodes: faultCode[] = [
@@ -74,7 +74,7 @@ const mockFaultCodes: faultCode[] = [
     module: 0,
     artifactType: "",
   },
-];
+]
 
 describe("SPNLookup Component", () => {
   it("renders without crashing", () => {
@@ -83,12 +83,12 @@ describe("SPNLookup Component", () => {
         value={100}
         faultCodeData={mockFaultCodes}
         onChange={() => {}}
-      />
-    );
+      />,
+    )
     // Use getByLabelText to ensure the correct element is targeted
-    const inputElement = screen.getByLabelText("SPN/Component");
-    expect(inputElement).toBeInTheDocument();
-  });
+    const inputElement = screen.getByLabelText("SPN/Component")
+    expect(inputElement).toBeInTheDocument()
+  })
 
   it("displays the correct value when the value is set", () => {
     render(
@@ -96,37 +96,37 @@ describe("SPNLookup Component", () => {
         value={100}
         faultCodeData={mockFaultCodes}
         onChange={() => {}}
-      />
-    );
+      />,
+    )
     // Ensure the value is correctly displayed in the input field
-    const inputElement = screen.getByLabelText("SPN/Component");
-    expect(inputElement).toHaveValue("100: Engine Speed");
-  });
+    const inputElement = screen.getByLabelText("SPN/Component")
+    expect(inputElement).toHaveValue("100: Engine Speed")
+  })
 
   it("calls onChange with correct value when a new option is selected", async () => {
-    const mockOnChange = vi.fn();
+    const mockOnChange = vi.fn()
 
     render(
       <SPNLookup
         value={100}
         faultCodeData={mockFaultCodes}
         onChange={mockOnChange}
-      />
-    );
+      />,
+    )
 
     // Get the Autocomplete input and simulate selecting an option
-    const inputElement = screen.getByLabelText("SPN/Component");
+    const inputElement = screen.getByLabelText("SPN/Component")
 
     // Open the dropdown
-    fireEvent.mouseDown(inputElement);
+    fireEvent.mouseDown(inputElement)
 
     // Wait for the options to appear, and select the "Coolant Temp" option
-    const option = await screen.findByText("200: Coolant Temp");
-    fireEvent.click(option);
+    const option = await screen.findByText("200: Coolant Temp")
+    fireEvent.click(option)
 
     // Wait for the onChange callback to be triggered
-    await waitFor(() => expect(mockOnChange).toHaveBeenCalledWith(200));
-  });
+    await waitFor(() => expect(mockOnChange).toHaveBeenCalledWith(200))
+  })
 
   it("filters out empty or invalid SPN options", () => {
     // All fields are filled to adhere to the `faultCode` type
@@ -236,27 +236,27 @@ describe("SPNLookup Component", () => {
         module: 0,
         artifactType: "",
       },
-    ];
+    ]
 
     render(
-      <SPNLookup value={123} faultCodeData={faultyData} onChange={() => {}} />
-    );
+      <SPNLookup value={123} faultCodeData={faultyData} onChange={() => {}} />,
+    )
 
-    const inputElement = screen.getByLabelText("SPN/Component");
+    const inputElement = screen.getByLabelText("SPN/Component")
 
     // Open the dropdown
-    fireEvent.mouseDown(inputElement);
-    expect(screen.getByText("123: Engine")).toBeInTheDocument();
-    expect(screen.getByText("789: Brakes")).toBeInTheDocument();
+    fireEvent.mouseDown(inputElement)
+    expect(screen.getByText("123: Engine")).toBeInTheDocument()
+    expect(screen.getByText("789: Brakes")).toBeInTheDocument()
 
     // Check that the invalid "456:" option is not displayed
-    expect(screen.queryByText("456:")).toBeNull();
-  });
+    expect(screen.queryByText("456:")).toBeNull()
+  })
 
   it("does not show any options if faultCodeData is empty", () => {
-    render(<SPNLookup value={100} faultCodeData={[]} onChange={() => {}} />);
+    render(<SPNLookup value={100} faultCodeData={[]} onChange={() => {}} />)
 
     // Ensure no options are rendered when faultCodeData is empty
-    expect(screen.queryByRole("listbox")).toBeNull();
-  });
-});
+    expect(screen.queryByRole("listbox")).toBeNull()
+  })
+})

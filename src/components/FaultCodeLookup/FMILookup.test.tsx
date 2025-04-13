@@ -1,8 +1,8 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { FMILookup } from "./FMILookup";
-import { describe, it, expect, vi } from "vitest";
-import { faultCode } from "../../types/faultCodes";
+import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { FMILookup } from "./FMILookup"
+import { describe, it, expect, vi } from "vitest"
+import { faultCode } from "../../types/faultCodes"
 
 const mockFaultCodes: faultCode[] = [
   {
@@ -46,7 +46,7 @@ const mockFaultCodes: faultCode[] = [
     implemented: true,
     faultCategory: "Category2",
     spn: 100,
-    fmi: 'FMI=2 - High Signal',
+    fmi: "FMI=2 - High Signal",
     primaryText: "",
     monitorActive: "",
     loopFault: "",
@@ -75,11 +75,11 @@ const mockFaultCodes: faultCode[] = [
     module: 0,
     artifactType: "",
   },
-];
+]
 
 describe("FMILookup component", () => {
   it("renders correctly and shows options for selected SPN", async () => {
-    const handleChange = vi.fn();
+    const handleChange = vi.fn()
 
     render(
       <FMILookup
@@ -87,23 +87,23 @@ describe("FMILookup component", () => {
         faultCodeData={mockFaultCodes}
         spnSelected={100}
         onChange={handleChange}
-      />
-    );
+      />,
+    )
 
-    const input = screen.getByRole("combobox");
-    expect(input).toBeInTheDocument();
+    const input = screen.getByRole("combobox")
+    expect(input).toBeInTheDocument()
 
-    await userEvent.click(input);
+    await userEvent.click(input)
 
-    const option1 = await screen.findByText("1 - Low Signal");
-    const option2 = await screen.findByText("2 - High Signal");
+    const option1 = await screen.findByText("1 - Low Signal")
+    const option2 = await screen.findByText("2 - High Signal")
 
-    expect(option1).toBeInTheDocument();
-    expect(option2).toBeInTheDocument();
-  });
+    expect(option1).toBeInTheDocument()
+    expect(option2).toBeInTheDocument()
+  })
 
   it("calls onChange with raw FMI when an option is selected", async () => {
-    const handleChange = vi.fn();
+    const handleChange = vi.fn()
 
     render(
       <FMILookup
@@ -111,17 +111,17 @@ describe("FMILookup component", () => {
         faultCodeData={mockFaultCodes}
         spnSelected={100}
         onChange={handleChange}
-      />
-    );
+      />,
+    )
 
-    const input = screen.getByRole("combobox");
-    await userEvent.click(input);
+    const input = screen.getByRole("combobox")
+    await userEvent.click(input)
 
-    const optionToSelect = await screen.findByText("2 - High Signal");
-    await userEvent.click(optionToSelect);
+    const optionToSelect = await screen.findByText("2 - High Signal")
+    await userEvent.click(optionToSelect)
 
-    expect(handleChange).toHaveBeenCalledWith('FMI=2 - High Signal');
-  });
+    expect(handleChange).toHaveBeenCalledWith("FMI=2 - High Signal")
+  })
 
   it("shows the cleaned label when a value is selected", async () => {
     render(
@@ -130,10 +130,10 @@ describe("FMILookup component", () => {
         faultCodeData={mockFaultCodes}
         spnSelected={100}
         onChange={() => {}}
-      />
-    );
+      />,
+    )
 
-    const input = screen.getByRole("combobox") as HTMLInputElement;
-    expect(input.value).toBe("1 - Low Signal");
-  });
-});
+    const input = screen.getByRole("combobox") as HTMLInputElement
+    expect(input.value).toBe("1 - Low Signal")
+  })
+})

@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { TextField } from "@mui/material"
 
 export const ReadOnlyText = ({
   label,
@@ -6,10 +6,10 @@ export const ReadOnlyText = ({
   multiline = true,
   color,
 }: {
-  label: string;
-  value?: string;
-  multiline?: boolean;
-  color?: string;
+  label: string
+  value?: string
+  multiline?: boolean
+  color?: string
 }) => (
   <TextField
     size="small"
@@ -26,9 +26,9 @@ export const ReadOnlyText = ({
         shrink: true,
         sx: {
           color: { color },
-          fontWeight: color ? "bold" : undefined
+          fontWeight: color ? "bold" : undefined,
         },
       },
     }}
   />
-);
+)

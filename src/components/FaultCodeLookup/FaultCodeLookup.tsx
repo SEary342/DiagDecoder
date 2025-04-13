@@ -2,17 +2,18 @@ import {
   Accordion,
   AccordionSummary,
   Box,
+  Button,
   Grid,
   Typography,
-} from "@mui/material";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
-import { FMILookup } from "./FMILookup";
-import { SPNLookup } from "./SPNLookup";
-import { ReadOnlyText } from "./ReadOnlyText";
-import { DegradedMode } from "./DegradedMode";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+} from "@mui/material"
+import { useState } from "react"
+import { useSelector } from "react-redux"
+import { RootState } from "../../store/store"
+import { FMILookup } from "./FMILookup"
+import { SPNLookup } from "./SPNLookup"
+import { ReadOnlyText } from "../Util/ReadOnlyText"
+import { DegradedMode } from "./DegradedMode"
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"
 
 const ContentHeader = ({ text }: { text: string }) => (
   <Box
@@ -27,18 +28,31 @@ const ContentHeader = ({ text }: { text: string }) => (
   >
     <Typography variant="subtitle1">{text}</Typography>
   </Box>
-);
+)
 
 export const FaultCodeLookup = () => {
-  const faultCodeData = useSelector(
-    (state: RootState) => state.faultCodes.list
-  );
+  const faultCodeData = useSelector((state: RootState) => state.faultCodes.list)
 
-  const [spnSelected, setspnSelected] = useState<number | null>(null);
-  const [fmiSelected, setfmiSelected] = useState<string | null>(null);
+  const [spnSelected, setspnSelected] = useState<number | null>(null)
+  const [fmiSelected, setfmiSelected] = useState<string | null>(null)
   const lookupData = faultCodeData.find(
-    (x) => x.spn === spnSelected && x.fmi === fmiSelected
-  );
+    (x) => x.spn === spnSelected && x.fmi === fmiSelected,
+  )
+
+  const faultInfoFields = {
+    "Fault Set Time": lookupData?.faultTime,
+    "Fault Clear Time": lookupData?.faultClear,
+    "Fault Latch": lookupData?.faultLatch,
+    "Method to Disable Fault": lookupData?.methodDisableFault,
+  }
+
+  const faultDMInjectMtds = {
+    "Mil Method to Inject Fault": lookupData?.milMethodFault,
+    "Hil Method to Inject Fault": lookupData?.hilMethodFault,
+    "Method to Inject Primary DM": lookupData?.milMethodPrimaryDM,
+    "Method to Inject Secondary DM": lookupData?.milMethodSecondaryDM,
+    "DM1 Broadcast": lookupData?.dm1Broadcast,
+  }
 
   return (
     <Box sx={{ padding: 2 }}>
@@ -149,11 +163,25 @@ export const FaultCodeLookup = () => {
               </Grid>
             </Grid>
           </Accordion>
+          <Grid container flexDirection="row">
+            <Button variant="contained">{`<<< Advanced Diagnostics`}</Button>
+          </Grid>
         </Grid>
         <Grid container spacing={2} flexDirection="column" size={4}>
           <ContentHeader text="Fault Information" />
+          {Object.entries(faultInfoFields).map(([k, v]) => (
+            <Grid container flexDirection="row">
+              <ReadOnlyText label={k} multiline value={v} />
+            </Grid>
+          ))}
+          <ContentHeader text="Fault/DM Injection Methods" />
+          {Object.entries(faultDMInjectMtds).map(([k, v]) => (
+            <Grid container flexDirection="row">
+              <ReadOnlyText label={k} multiline value={v} />
+            </Grid>
+          ))}
         </Grid>
       </Grid>
     </Box>
-  );
-};
+  )
+}
